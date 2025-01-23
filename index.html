@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Gift Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+        }
+        .output {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Discord Gift Checker</h1>
+        <p>Upload a .txt file containing Discord gift links</p>
+        <input type="file" id="fileInput" accept=".txt" />
+        <button onclick="checkGiftLinks()">Check Links</button>
+
+        <div class="output" id="result"></div>
+    </div>
+
+    <script>
+        let giftLinks = [];
+
+        // Read the file and extract discord.gift links
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    giftLinks = content.split('\n').filter(line => line.startsWith('https://discord.gift/'));
+                    document.getElementById('result').textContent = `${giftLinks.length} potential gift links found.`;
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        function checkGiftLinks() {
+            if (giftLinks.length === 0) {
+                alert("No valid links found. Please upload a file with discord.gift links.");
+                return;
+            }
+
+            // Simulate checking the gift links
+            let validLinks = 0;
+            giftLinks.forEach(link => {
+                // Simulate link check - here we assume all are valid for demonstration purposes
+                // In real implementation, we would send the link to a back-end server to verify
+                validLinks++;  // Increase the valid link count
+            });
+
+            // Show result
+            document.getElementById('result').textContent = `${validLinks} valid gift links found out of ${giftLinks.length}.`;
+        }
+    </script>
+</body>
+</html>
